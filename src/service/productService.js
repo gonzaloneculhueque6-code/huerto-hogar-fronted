@@ -6,14 +6,11 @@ const API_URL = "http://localhost:8080/api/v1/productos";
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     if (token) {
-        // Formato estándar: "Bearer eyJhbGciOi..."
         return { Authorization: `Bearer ${token}` };
     }
     return {};
 };
-
 // Peticiones CRUD para productos con manejo de token JWT
-
 export const getProductos = async () => {
     // GET: axios.get(url, config)
     const res = await axios.get(API_URL, { headers: getAuthHeaders() });
