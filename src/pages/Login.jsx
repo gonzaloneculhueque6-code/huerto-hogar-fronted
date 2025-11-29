@@ -23,34 +23,32 @@ export default function Login({ setUser }) {
     }
     setError(false);
 
-    //Reemplazamos la lógica de localStorage por la llamada al Backend
+  
    try {
-      const usuarioBackend = await loginUsuario(correo, contrasena);
+      const respuestaBackend = await loginUsuario(correo, contrasena);
 
-      console.log("Usuario recibido del Backend:", usuarioBackend);
-      console.log("Rol del usuario:", usuarioBackend.rol);
+      //CLAVE AQUÍ - Manejo del token JWT
+      // Separamos el usuario del token
+      const usuarioReal = respuestaBackend.usuario; 
+      const token = respuestaBackend.token;
 
-      alert(`¡Bienvenido/a, ${usuarioBackend.nombre}!`);
-      setUser(usuarioBackend);
-      localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioBackend));
+      // Guardamos el token en el navegador 
+      if (token) {
+          localStorage.setItem('token', token);
+      }
+      alert(`¡Bienvenido/a, ${usuarioReal.nombre}!`);
+      setUser(usuarioReal);
+      localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioReal));
 
-      
-      // Verifica si existe el rol y si su nombre (en mayúsculas) es ADMIN
-      // También cubrimos el caso raro de que el rol venga como simple string
-      const nombreRol = usuarioBackend.rol?.nombre || usuarioBackend.rol; 
-      
-      if (nombreRol && String(nombreRol).toUpperCase() === 'ADMIN') {
-        console.log("Redirigiendo a /administrador");
+      if (usuarioReal.rol && (usuarioReal.rol.nombre === 'ADMIN' || usuarioReal.rol === 'admin')) {
         navigate('/administrador');
       } else {
-        console.log("Redirigiendo a / (Home)");
         navigate('/');
       }
 
     } catch (err) {
       console.error("Error en login:", err);
       setError(true);
-      
       // Manejo de errores específicos del Backend
       if (err.response && err.response.status === 401) {
         setMensajeError('El correo o la contraseña son incorrectos.');
