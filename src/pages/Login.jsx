@@ -8,7 +8,7 @@ export default function Login({ setUser }) {
   const [contrasena, setContrasena] = useState('');
   const navigate = useNavigate();
   
-  //Estados para manejo de errores visuales
+  //Estados para manejo de errores visuale
   const [error, setError] = useState(false);
   const [mensajeError, setMensajeError] = useState('');
 
