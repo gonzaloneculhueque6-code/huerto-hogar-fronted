@@ -1,0 +1,206 @@
+body {
+    background-color: #F7F7F7;
+    color: #333;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    padding: 40px;
+    flex-grow: 1;
+}
+
+.fondo_prin {
+    margin: 0;
+    padding: 0;
+    background-color: #F7F7F7;
+    font-family: Arial, sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+    color: #8B4513;
+}
+
+button,
+.btn {
+    background-color: #2E8B57;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+    background-color: #246b45;
+}
+
+/* ESTILOS DE TEXTO */
+.titulo {
+    font-size: 25px;
+    font-family: 'Playfair Display', serif;
+    color: #8B4513;
+    font-weight: 700;
+    /*Usado en Navbar, Productos, Home, Admin */
+}
+
+.texto_pric {
+    color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    /* Usado en Home, Navbar saludo, Admin Dashboard */
+}
+
+.desc_prod_text_sec {
+    color: #666666;
+    font-family: 'Montserrat', sans-serif;
+    /* Usado en Productos.jsx */
+}
+
+.enlaces {
+    color: #2E8B57;
+    text-decoration: underline;
+    /* Usado en Navbar, Login */
+}
+
+
+.caja_titulo {
+    background: #d3d3d3;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: solid black;
+}
+
+.caja_formulario {
+    background: #d3d3d3;
+    width: 100%;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border: 3px solid black;
+}
+
+.caja_pie {
+    background: #d3d3d3;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top: solid black;
+}
+
+.caja_tienda_online {
+    background: #d3d3d3;
+    width: 100%;
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+.caja_blogs {
+    background: #d3d3d3;
+    width: 100%;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+
+.tamano_img {
+    border-bottom: solid black;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+
+
+.categoria-filtros .button {
+    margin: 0 4px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.categoria-filtros .button.active {
+    background-color: #1a4d36;
+    color: white;
+    font-weight: bold;
+}
+
+.categoria-filtros .button:not(.active) {
+    background-color: white;
+    color: #2E8B57;
+    border: 1px solid #2E8B57;
+}
+
+.categoria-filtros .button:not(.active):hover {
+    background-color: #e6f4ea;
+}
+
+
+/*Estilo para administrador*/
+.admin-container {
+    padding-top: 70px;
+    display: flex;
+}
+
+.admin-content-area {
+    padding: 20px;
+    width: 100%;
+}
+
+.color-cartas {
+
+    border: 1px solid #dee2e6;
+}
+
+.action-card {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.promo {
+    background-color: #FFD700;
+    color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.btn-rojo {
+    background-color: #dc3545;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.btn-rojo:hover {
+    background-color: #c82333;
+}
