@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+//Importamos axios para configurar el interceptor
+import axios from 'axios'; 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/estilo.css';
 
-import { getProductos } from './service/productService';
+import { getProductos } from './service/productService'; 
+
 // Componentes
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -22,13 +26,10 @@ import PagoExitoso from './pages/PagoExitoso';
 import PagoFallido from './pages/PagoFallido';
 
 export default function App() {
-  // Estados Globales
   const [user, setUser] = useState(null);
   const [productos, setProductos] = useState([]); 
   const [loading, setLoading] = useState(true);
 
-  // Persistencia de Sesión
-  // Recupera al usuario si recargamos la página para no perder el login
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioLogueado');
     if (usuarioGuardado) {
@@ -36,7 +37,26 @@ export default function App() {
     }
   }, []);
 
-  //Cargar Productos desde Backend (Usando Service)
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      response => response, 
+      error => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          console.warn("Sesión expirada o inválida. Cerrando sesión...");
+          localStorage.removeItem('usuarioLogueado');
+          localStorage.removeItem('token');
+          setUser(null);
+         
+        }
+        return Promise.reject(error);
+      }
+    );
+    
+    return () => axios.interceptors.response.eject(interceptor);
+  }, []);
+
+
+  // Carga Productos
   useEffect(() => {
     const cargarDatos = async () => {
       try {
@@ -53,10 +73,8 @@ export default function App() {
     cargarDatos();
   }, []);
 
-  //Lógica para ocultar Navbar en el panel de admin
   const location = useLocation();
   const isAdminRoute = location.pathname === '/administrador';
-
 
   const tienePermisoAdmin = () => {
     if (!user || !user.rol) return false;
@@ -65,7 +83,6 @@ export default function App() {
     return rolUpper === 'ADMIN' || rolUpper === 'VENDEDOR';
   };
 
-  // Pantalla de carga simple
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -79,31 +96,25 @@ export default function App() {
   return (
     <div className="fondo_prin d-flex flex-column min-vh-100">
       
-      {/* Navbar se oculta en Admin */}
       {!isAdminRoute && <Navbar user={user} setUser={setUser} />}
 
       <main className="flex-grow-1">
         <Routes>
-          {/* Rutas Públicas */}
           <Route path="/" element={<Home user={user} />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contacto" element={<Contacto />} />
           
-          {/* Tienda */}
           <Route path="/productos" element={<Productos productos={productos} />} />
           <Route path="/detalle/:id" element={<DetalleProducto productos={productos} />} />
 
-          {/* Transaccionales */}
           <Route path="/carrito" element={<Carrito user={user} />} />
           <Route path="/pagoexitoso" element={<PagoExitoso />} />
           <Route path="/pagofallido" element={<PagoFallido />} />
 
-          {/* Autenticación */}
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/registro" element={<Registro />} />
 
-          {/* Ruta Protegida (Admin y Vendedor) */}
           <Route
             path="/administrador"
             element={
@@ -113,14 +124,13 @@ export default function App() {
                     user={user}
                     setUser={setUser}
                     productos={productos}      
-                    // Para actualizar lista al crear/editar/eliminar
                     setProductos={setProductos} 
                   />
                 ) 
                 : <Navigate to="/login" replace />
             }
           />
-          {/* 404 Not Found */}
+          
           <Route path="*" element={<div className="text-center my-5"><h1>404 - Página no encontrada</h1></div>} />
         </Routes>
       </main>

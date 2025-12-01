@@ -81,7 +81,9 @@ export default function Administrador({ user, setUser, productos, setProductos }
 
   const getMenuTabs = () => {
     if (esAdmin) return ['dashboard', 'ordenes', 'productos', 'usuarios', 'reportes'];
-    if (esVendedor) return ['ordenes', 'productos'];
+    
+    if (esVendedor) return ['ordenes', 'productos']; 
+    
     return [];
   };
 

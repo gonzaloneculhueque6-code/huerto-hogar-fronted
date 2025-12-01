@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUsuario } from '../service/usuariosService';
+import { loginUsuario } from '../service/usuariosService'; 
 
 
 export default function Login({ setUser }) {
@@ -27,7 +27,7 @@ export default function Login({ setUser }) {
    try {
       const respuestaBackend = await loginUsuario(correo, contrasena);
 
-      //CLAVE AQUÍ - Manejo del token JWT
+      //Manejo del token JWT
       //Separamos el usuario del token
       const usuarioReal = respuestaBackend.usuario; 
       const token = respuestaBackend.token;
@@ -40,7 +40,11 @@ export default function Login({ setUser }) {
       setUser(usuarioReal);
       localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioReal));
 
-      if (usuarioReal.rol && (usuarioReal.rol.nombre === 'ADMIN' || usuarioReal.rol === 'admin')) {
+      const nombreRol = usuarioReal.rol?.nombre || usuarioReal.rol || '';
+      const rolUpper = String(nombreRol).toUpperCase();
+
+      // Verificamos si es ADMIN o VENDEDOR para enviarlos al panel
+      if (rolUpper === 'ADMIN' || rolUpper === 'VENDEDOR') {
         navigate('/administrador');
       } else {
         navigate('/');
@@ -49,7 +53,6 @@ export default function Login({ setUser }) {
     } catch (err) {
       console.error("Error en login:", err);
       setError(true);
-      // Manejo de errores específicos del Backend
       if (err.response && err.response.status === 401) {
         setMensajeError('El correo o la contraseña son incorrectos.');
       } else {
