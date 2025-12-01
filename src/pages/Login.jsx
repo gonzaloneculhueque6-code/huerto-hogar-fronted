@@ -8,7 +8,7 @@ export default function Login({ setUser }) {
   const [contrasena, setContrasena] = useState('');
   const navigate = useNavigate();
   
-  //Estados para manejo de errores visuale
+  //Estados para manejo de errores visuales
   const [error, setError] = useState(false);
   const [mensajeError, setMensajeError] = useState('');
 
@@ -28,7 +28,7 @@ export default function Login({ setUser }) {
       const respuestaBackend = await loginUsuario(correo, contrasena);
 
       //CLAVE AQUÍ - Manejo del token JWT
-      // Separamos el usuario del token
+      //Separamos el usuario del token
       const usuarioReal = respuestaBackend.usuario; 
       const token = respuestaBackend.token;
 
