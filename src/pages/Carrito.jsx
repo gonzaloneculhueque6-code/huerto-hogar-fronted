@@ -86,10 +86,21 @@ export default function Carrito({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Si no hay usuario, redirigimos directamente a Pago Fallido
+    // en lugar de mostrar alerta o bloquear.
     if (!user) {
-      alert('Debes iniciar sesión o registrarte para completar la compra.');
+      console.warn("Intento de compra sin sesión: Redirigiendo a Pago Fallido.");
+      navigate('/pagofallido', {
+          state: {
+              formData: formData,
+              carrito: carrito,
+              total: total,
+              errorType: 'unauthorized' // Para saber que fue por falta de sesión
+          }
+      });
       return;
     }
+    // -------------------------
     
     const carritoActual = JSON.parse(localStorage.getItem('carrito') || '[]');
     if (carritoActual.length === 0) {
@@ -136,18 +147,19 @@ export default function Carrito({ user }) {
                 formData: formData, // Para mostrar datos del cliente
                 carrito: carritoActual, // Para mostrar items
                 total: total,
-                ordenId: ordenCreada.id // ID real de la BD
+                ordenId: ordenCreada.id 
             }
         });
 
     } catch (error) {
         console.error("Error detallado al comprar:", error);
-        // Mostrar alerta con el error real del servidor si existe
+        
         let mensajeErrorBackend = "Error desconocido";
         if (error.response && error.response.data) {
-            //A veces Spring devuelve un JSON con "message" o texto plano
+
             mensajeErrorBackend = error.response.data.message || JSON.stringify(error.response.data);
         }
+        
         
         alert(`No se pudo procesar el pago.\nServidor dice: ${mensajeErrorBackend}`);
 
@@ -257,7 +269,8 @@ export default function Carrito({ user }) {
               </div>
 
               <div className="d-grid gap-2 mt-4">
-                <button type="submit" className="button btn-lg" disabled={!user}>Pagar Ahora</button>
+               
+                <button type="submit" className="button btn-lg">Pagar Ahora</button>
               </div>
             </div>
           </div>
