@@ -82,8 +82,6 @@ export default function GestionOrdenes({ ordenes = [], setOrdenes }) {
           <table className="table table-hover mb-0 align-middle">
             <thead className="table-dark">
               <tr>
-                <th>ID Orden</th>
-                <th>Fecha</th>
                 <th>Cliente (Email)</th>
                 <th>Total</th>
                 <th className='text-center'>Estado</th>
