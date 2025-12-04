@@ -71,7 +71,7 @@ export default function Registro(){
             telefono: form.telefono,
             region: region,
             comuna: comuna,
-            rol: 'cliente' // Asignamos rol por defecto para registros web
+            rol: {nombre: "CLIENTE"}
         };
 
         // Llamamos al servicio (esto hace el POST a Spring Boot)
